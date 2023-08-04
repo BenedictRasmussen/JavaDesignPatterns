@@ -5,6 +5,13 @@
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "interactive"
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"java.jdt.ls.java.home": "E:\\Development\\Java17\\jdk-17",
+		"java.configuration.runtimes": [
+			{
+				"name": "JavaSE-17",
+				"path": "E:\\Development\\Java17\\jdk-17",
+			},
+		]
 	}
 }
