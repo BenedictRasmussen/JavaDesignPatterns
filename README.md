@@ -16,13 +16,13 @@ Each major- and sub-category is explained below.
 The Creation pattern archetypes describe the process of object creation. Creational Class patterns defer parts of object creation to subclasses. Creational Object patterns defer object creation to other objects.
 
 1. (Class) Factory Method
-  1. Implemented in: `abstractFactory`
+    - Implemented in: `abstractFactory`
 1. (Object) Abstract Factory
-  1. Implemented in: `abstractFactory`
+    - Implemented in: `abstractFactory`
 1. (Object) Builder
 1. (Object) Prototype
 1. (Object) Singleton
-  1. Implemented in: `abstractFactory`
+    - Implemented in: `abstractFactory`
 
 ### Structural Patterns
 The Structural pattern archetypes deal with how objects are composed. Structural Class patterns use inheritance to compose classes. Structural Object patterns describe way to assemble objects together.
