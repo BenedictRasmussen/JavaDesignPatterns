@@ -7,7 +7,7 @@ import JavaDesignPatterns.abstractFactory.models.components.panel.WoodPanel;
 /**
  * Creates a wooden door.
  */
-public final class WoodenDoorFactory extends DoorFactory {
+public class WoodenDoorFactory {
     private static WoodenDoorFactory instance;
 
     public static WoodenDoorFactory getInstance() {

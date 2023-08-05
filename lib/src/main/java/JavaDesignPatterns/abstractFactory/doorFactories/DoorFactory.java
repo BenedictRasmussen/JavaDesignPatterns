@@ -10,6 +10,8 @@ public class DoorFactory implements OpeningFactory<Door> {
         switch (type) {
             case Wood:
                 return WoodenDoorFactory.getInstance().createDoor();
+            case Iron:
+                return IronDoorFactory.getInstance().createDoor();
             default:
                 throw new Exception(String.format("Cannot create door of type %s", type));
         }

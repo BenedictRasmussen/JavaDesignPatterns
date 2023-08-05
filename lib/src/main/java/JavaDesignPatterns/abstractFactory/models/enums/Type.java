@@ -5,5 +5,5 @@ package JavaDesignPatterns.abstractFactory.models.enums;
  * produce.
  */
 public enum Type {
-    PostModern, Glass, Wood, Iron, Frosted
+    Glass, Wood, Iron, Frosted
 }

@@ -9,6 +9,8 @@ public class WindowFactory implements OpeningFactory<Window> {
         switch (type) {
             case Frosted:
                 return FrostedWindowFactory.getInstance().createWindow();
+            case Glass:
+                return GlassWindowFactory.getInstance().createWindow();
             default:
                 throw new Exception(String.format("Cannot create window of type %s", type));
         }
