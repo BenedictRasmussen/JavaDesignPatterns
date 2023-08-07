@@ -5,13 +5,7 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.nar
@@ -29,3 +23,7 @@ replay_pid*
 
 # Ignore Gradle build output directory
 build
+
+# IDE files
+*.idea/
+*.code-workspace
