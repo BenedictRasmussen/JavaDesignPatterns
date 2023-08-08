@@ -1,7 +1,5 @@
 package JavaDesignPatterns.builder.builders;
 
-import JavaDesignPatterns.builder.models.enums.PaintType;
-
 /**
  * The {@link CustomDoorBuilder} has no preset defaults, allowing customers to add pieces as they see fit.
  */
@@ -10,11 +8,6 @@ public class CustomDoorBuilder implements DoorBuilder {
 
     public CustomDoorBuilder() {
         this.door = new Door();
-    }
-
-    @Override
-    public DoorBuilder addPaint(PaintType type) {
-        return this;
     }
 
     @Override
