@@ -31,28 +31,32 @@ repositories {
 }
 
 dependencies {
+    // Use the AWS "Bill of Materials" (BOM) to manage AWS versions. Using this, we do not need to specify a version on
+    // each AWS dependency.
+    // https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/setup-project-gradle.html
+    implementation platform('software.amazon.awssdk:bom:2.20.125')
+
+    // Use the DynamoDb Enhanced package
+    implementation 'software.amazon.awssdk:dynamodb-enhanced'
+
     // Use TestNG for testing, specifically for suite-level control
     testImplementation 'org.testng:testng:7.8.0'
     // Use AssertJ for assertions
     testImplementation 'org.assertj:assertj-core:3.24.2'
 
     // Adds a locally running DynamoDB instance
+    testImplementation 'software.amazon.awssdk:url-connection-client'
     testImplementation 'com.amazonaws:DynamoDBLocal:2.0.0'
-    configurations.dynamoDbLocal { fileTree(dir: 'lib', include: ["*.dylib", "*.so", "*.dll"]) }
-    configurations.dynamoDbLocal { 'com.amazonaws:DynamoDBLocal:2.0.0' }
-
-    // Use JUnit Jupiter Engine for testing.
-    // TODO remove?
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-//    testRuntimeOnly "org.junit.platform:junit-platform-commons:1.7.0"
+    dynamoDbLocal fileTree(dir: 'lib', include: ["*.dylib", "*.so", "*.dll"])
+    dynamoDbLocal 'com.amazonaws:DynamoDBLocal:2.0.0'
 }
 
 tasks.register('copyNativeDeps', Copy) {
     from configurations.dynamoDbLocal
+    print "Build Dir = $project.buildDir"
     into "$project.buildDir/libs/"
 }
 
-//test.dependsOn copyNativeDeps
 test {
     // These two statements are required to set up DynamoDb local
     dependsOn copyNativeDeps
@@ -65,7 +69,7 @@ test {
         testLogging {
             events "PASSED", "SKIPPED", "FAILED"
             // Set this to true to see STDOUT and STDERR on the console
-            showStandardStreams = false
+            showStandardStreams = true
         }
     }
 }
