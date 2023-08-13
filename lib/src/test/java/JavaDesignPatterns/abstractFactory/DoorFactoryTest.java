@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import JavaDesignPatterns.abstractFactory.doorFactories.DoorFactory;
 import JavaDesignPatterns.abstractFactory.models.Door;
 import JavaDesignPatterns.abstractFactory.models.Material;
@@ -17,6 +14,9 @@ import JavaDesignPatterns.abstractFactory.models.components.panel.WoodPanel;
 import JavaDesignPatterns.abstractFactory.models.enums.FactoryType;
 import JavaDesignPatterns.abstractFactory.models.enums.Finish;
 import JavaDesignPatterns.abstractFactory.models.enums.Type;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DoorFactoryTest {
@@ -28,7 +28,6 @@ public class DoorFactoryTest {
             factory = (DoorFactory) OpeningFactoryProvider.getFactory(FactoryType.Door);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return;
         }
     }
 

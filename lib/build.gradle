@@ -3,23 +3,65 @@ plugins {
     id 'java-library'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+// Define a custom configuration set to allow us to configure DynamoDb local.
+configurations {
+    dynamoDbLocal
+}
+
 repositories {
     mavenCentral()
+    // Add another Maven source
+    maven {
+        name "DynamoDB Local Release Repository"
+        url "https://s3-us-west-2.amazonaws.com/dynamodb-local/release"
+    }
 }
 
 dependencies {
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
 
+    // Adds a locally running DynamoDB instance
+    testImplementation 'com.amazonaws:DynamoDBLocal:2.0.0'
+    configurations.dynamoDbLocal { fileTree(dir: 'lib', include: ["*.dylib", "*.so", "*.dll"]) }
+    configurations.dynamoDbLocal { 'com.amazonaws:DynamoDBLocal:2.0.0' }
+
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testRuntimeOnly "org.junit.platform:junit-platform-commons:1.7.0"
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:29.0-jre'
 }
 
+tasks.register('copyNativeDeps', Copy) {
+    from configurations.dynamoDbLocal
+    into "$project.buildDir/libs/"
+}
+
+//test.dependsOn copyNativeDeps
 test {
+    // These two statements are required to set up DynamoDb local
+    dependsOn copyNativeDeps
+    doFirst {
+        systemProperty "java.library.path", 'build/libs'
+    }
+
     // Use junit platform for unit tests.
     useJUnitPlatform()
+
+    testLogging {
+        events "PASSED", "SKIPPED", "FAILED"
+    }
 }
+
