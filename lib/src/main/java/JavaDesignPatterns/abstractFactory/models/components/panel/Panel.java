@@ -6,10 +6,10 @@ public interface Panel {
     /**
      * Whether this door panel type is hollow.
      */
-    public boolean isHollow();
+    boolean isHollow();
 
     /**
      * What type of material the door panel is made of
      */
-    public Material material();
+    Material material();
 }

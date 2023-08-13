@@ -6,6 +6,8 @@ import JavaDesignPatterns.abstractFactory.models.components.pane.GlassPane;
 public class GlassWindowFactory {
     private static GlassWindowFactory instance;
 
+    private GlassWindowFactory() {}
+
     public static GlassWindowFactory getInstance() {
         if (GlassWindowFactory.instance == null) {
             GlassWindowFactory.instance = new GlassWindowFactory();
@@ -13,8 +15,6 @@ public class GlassWindowFactory {
 
         return GlassWindowFactory.instance;
     }
-
-    private GlassWindowFactory() {}
 
     Window createWindow() {
         return new Window(new GlassPane());

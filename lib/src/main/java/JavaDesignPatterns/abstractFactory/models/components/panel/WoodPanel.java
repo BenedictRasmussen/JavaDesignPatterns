@@ -13,5 +13,4 @@ public final class WoodPanel implements Panel {
     public Material material() {
         return Material.Wood;
     }
-
 }

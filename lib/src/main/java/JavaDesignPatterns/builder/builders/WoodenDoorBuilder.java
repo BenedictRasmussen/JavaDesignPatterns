@@ -18,9 +18,9 @@ public class WoodenDoorBuilder implements DoorBuilder {
     public DoorBuilder addPanel() {
         Panel panel = new Panel();
         panel.setMaterial(Material.Wood)
-             .setColor("Brown")
-             .setPrimer(null)
-             .setFinish(Finish.EggShell);
+            .setColor("Brown")
+            .setPrimer(null)
+            .setFinish(Finish.EggShell);
         this.door.setPanel(panel);
         return this;
     }
@@ -29,7 +29,7 @@ public class WoodenDoorBuilder implements DoorBuilder {
     public DoorBuilder addHinges() {
         Hinge hinge = new Hinge();
         hinge.setMaterial(Material.Brass)
-             .setFinish(Finish.Shine);
+            .setFinish(Finish.Shine);
         this.door.setHinge(hinge);
         return this;
     }
@@ -38,8 +38,8 @@ public class WoodenDoorBuilder implements DoorBuilder {
     public DoorBuilder addHandle() {
         Handle handle = new Handle();
         handle.setFinish(Finish.Shine)
-              .setMaterial(Material.Brass)
-              .setType(HandleType.Knob);
+            .setMaterial(Material.Brass)
+            .setType(HandleType.Knob);
         this.door.setHandle(handle);
         return this;
     }

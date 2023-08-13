@@ -18,5 +18,4 @@ public class GlassPane implements Pane {
     public Material material() {
         return Material.Glass;
     }
-
 }

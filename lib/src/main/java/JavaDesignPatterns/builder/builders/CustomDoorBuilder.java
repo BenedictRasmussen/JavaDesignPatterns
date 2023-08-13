@@ -34,6 +34,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the material of the door panel.
      *
      * @param material the {@link Material} to paint the door
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setPanelMaterial(Material material) {
@@ -45,6 +46,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the color of the door panel.
      *
      * @param color the color to paint the door
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setPanelColor(String color) {
@@ -56,6 +58,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the primer used on the door panel.
      *
      * @param primerType the type of primer to use, e.g. "Oil-based"
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setPanelPrimer(String primerType) {
@@ -67,6 +70,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the finish used on the door panel
      *
      * @param finish the {@link Finish} to use.
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setPanelFinish(Finish finish) {
@@ -88,6 +92,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the material used to create the door hinges.
      *
      * @param material the {@link Material} to use
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setHingeMaterial(Material material) {
@@ -99,6 +104,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the finish used on the door hinges.
      *
      * @param finish the finish to use
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setHingeFinish(Finish finish) {
@@ -107,7 +113,7 @@ public class CustomDoorBuilder implements DoorBuilder {
     }
 
     @Override
-    public DoorBuilder addHandle() throws DoorBuildException{
+    public DoorBuilder addHandle() throws DoorBuildException {
         if (this.handle.material() == null || this.handle.type() == null) {
             throw new DoorBuildException("Client must specify the door handle's material and type");
         }
@@ -120,6 +126,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the material to create the door handle with.
      *
      * @param material the {@link Material} to use.
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setHandleMaterial(Material material) {
@@ -132,6 +139,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the type of handle to install on the door handle.
      *
      * @param type the {@link HandleType} to install on the door
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setHandleType(HandleType type) {
@@ -144,6 +152,7 @@ public class CustomDoorBuilder implements DoorBuilder {
      * Sets the finish to use on the door handle.
      *
      * @param finish the {@link Finish} to use on the door handle.
+     *
      * @return this {@link CustomDoorBuilder}, for composition
      */
     public CustomDoorBuilder setHandleFinish(Finish finish) {

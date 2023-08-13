@@ -10,6 +10,8 @@ import JavaDesignPatterns.abstractFactory.models.components.panel.IronPanel;
 public class IronDoorFactory {
     private static IronDoorFactory instance;
 
+    private IronDoorFactory() {}
+
     public static IronDoorFactory getInstance() {
         if (IronDoorFactory.instance == null) {
             IronDoorFactory.instance = new IronDoorFactory();
@@ -17,8 +19,6 @@ public class IronDoorFactory {
 
         return IronDoorFactory.instance;
     }
-
-    private IronDoorFactory() {}
 
     Door createDoor() {
         return new Door(new IronHinge(), new IronPanel());

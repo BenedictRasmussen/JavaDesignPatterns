@@ -10,6 +10,8 @@ import JavaDesignPatterns.abstractFactory.models.components.panel.WoodPanel;
 public class WoodenDoorFactory {
     private static WoodenDoorFactory instance;
 
+    private WoodenDoorFactory() {}
+
     public static WoodenDoorFactory getInstance() {
         if (WoodenDoorFactory.instance == null) {
             WoodenDoorFactory.instance = new WoodenDoorFactory();
@@ -17,8 +19,6 @@ public class WoodenDoorFactory {
 
         return WoodenDoorFactory.instance;
     }
-
-    private WoodenDoorFactory() {}
 
     Door createDoor() {
         return new Door(new BrassHinge(), new WoodPanel());

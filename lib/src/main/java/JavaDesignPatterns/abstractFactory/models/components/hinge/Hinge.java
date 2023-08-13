@@ -10,10 +10,10 @@ public interface Hinge {
     /**
      * What material the hinge is made of.
      */
-    public Material material();
+    Material material();
 
     /**
      * What type of finish is used on the hinge material.
      */
-    public Finish finish();
+    Finish finish();
 }

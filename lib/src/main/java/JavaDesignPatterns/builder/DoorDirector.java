@@ -7,9 +7,9 @@ import JavaDesignPatterns.builder.models.DoorBuildException;
 public class DoorDirector {
     public static Door build(DoorBuilder builder) throws DoorBuildException {
         return builder
-                .addPanel()
-                .addHinges()
-                .addHandle()
-                .build();
+            .addPanel()
+            .addHinges()
+            .addHandle()
+            .build();
     }
 }

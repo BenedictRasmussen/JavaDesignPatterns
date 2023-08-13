@@ -5,8 +5,8 @@ import JavaDesignPatterns.abstractFactory.models.components.panel.Panel;
 
 
 public class Door {
-    private Hinge hinge;
-    private Panel panel;
+    private final Hinge hinge;
+    private final Panel panel;
 
     public Door(Hinge hinge, Panel panel) {
         this.hinge = hinge;

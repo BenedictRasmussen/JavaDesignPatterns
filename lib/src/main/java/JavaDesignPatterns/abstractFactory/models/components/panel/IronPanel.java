@@ -13,5 +13,4 @@ public final class IronPanel implements Panel {
     public Material material() {
         return Material.Iron;
     }
-
 }
