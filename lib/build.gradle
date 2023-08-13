@@ -31,8 +31,10 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    // Use TestNG for testing, specifically for suite-level control
+    testImplementation 'org.testng:testng:7.8.0'
+    // Use AssertJ for assertions
+    testImplementation 'org.assertj:assertj-core:3.24.2'
 
     // Adds a locally running DynamoDB instance
     testImplementation 'com.amazonaws:DynamoDBLocal:2.0.0'
@@ -40,8 +42,9 @@ dependencies {
     configurations.dynamoDbLocal { 'com.amazonaws:DynamoDBLocal:2.0.0' }
 
     // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testRuntimeOnly "org.junit.platform:junit-platform-commons:1.7.0"
+    // TODO remove?
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+//    testRuntimeOnly "org.junit.platform:junit-platform-commons:1.7.0"
 }
 
 tasks.register('copyNativeDeps', Copy) {
@@ -57,11 +60,13 @@ test {
         systemProperty "java.library.path", 'build/libs'
     }
 
-    // Use junit platform for unit tests.
-    useJUnitPlatform()
-
-    testLogging {
-        events "PASSED", "SKIPPED", "FAILED"
+    // Use TestNG platform for unit tests.
+    useTestNG {
+        testLogging {
+            events "PASSED", "SKIPPED", "FAILED"
+            // Set this to true to see STDOUT and STDERR on the console
+            showStandardStreams = false
+        }
     }
 }
 

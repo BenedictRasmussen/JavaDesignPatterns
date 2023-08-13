@@ -1,79 +1,64 @@
 package JavaDesignPatterns.abstractFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import JavaDesignPatterns.abstractFactory.models.Material;
-import JavaDesignPatterns.abstractFactory.models.Window;
 import JavaDesignPatterns.abstractFactory.models.components.pane.FrostedPane;
 import JavaDesignPatterns.abstractFactory.models.components.pane.GlassPane;
+import JavaDesignPatterns.abstractFactory.models.components.pane.Pane;
 import JavaDesignPatterns.abstractFactory.models.enums.FactoryType;
 import JavaDesignPatterns.abstractFactory.models.enums.Type;
 import JavaDesignPatterns.abstractFactory.windowFactories.WindowFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class WindowFactoryTest {
     WindowFactory factory;
 
-    @BeforeAll
+    @BeforeClass
     public void createFactory() {
         try {
-            factory = (WindowFactory) OpeningFactoryProvider.getFactory(FactoryType.Window);
+            factory = (WindowFactory)OpeningFactoryProvider.getFactory(FactoryType.Window);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return;
         }
     }
 
     /**
-     * GIVEN a frosted window order
-     *  WHEN a window is created
-     *  THEN the window's pane is opaque
-     *   AND the window cannot open
-     *   AND the window is made of glass
+     * GIVEN a frosted window order WHEN a window is created THEN the window's pane is opaque AND the window cannot open
+     * AND the window is made of glass
      */
     @Test
     public void testFrostedWindow() throws Exception {
-        Window actual = factory.create(Type.Frosted);
-
-        assertTrue(actual.pane() instanceof FrostedPane);
-        assertTrue(actual.pane().isOpaque());
-        assertFalse(actual.pane().canOpen());
-        assertEquals(actual.pane().material(), Material.Glass);
+        Pane actual = factory.create(Type.Frosted).pane();
+        assertThat(actual).isInstanceOf(FrostedPane.class);
+        assertThat(actual.isOpaque()).isTrue();
+        assertThat(actual.canOpen()).isFalse();
+        assertThat(actual.material()).isEqualTo(Material.Glass);
     }
 
     /**
-     * GIVEN a glass window order
-     *  WHEN a window is created
-     *  THEN the window's pane is not opaque
-     *   AND the window can open
-     *   AND the window is made of glass
+     * 6 GIVEN a glass window order WHEN a window is created THEN the window's pane is not opaque AND the window can
+     * open AND the window is made of glass
      */
     @Test
     public void testGlassWindow() throws Exception {
-        Window actual = factory.create(Type.Glass);
-
-        assertTrue(actual.pane() instanceof GlassPane);
-        assertFalse(actual.pane().isOpaque());
-        assertTrue(actual.pane().canOpen());
-        assertEquals(actual.pane().material(), Material.Glass);
+        Pane actual = factory.create(Type.Glass).pane();
+        assertThat(actual).isInstanceOf(GlassPane.class);
+        assertThat(actual.isOpaque()).isFalse();
+        assertThat(actual.canOpen()).isTrue();
+        assertThat(actual.material()).isEqualTo(Material.Glass);
     }
 
     /**
-     * GIVEN an order for a window type that does not exist
-     *  WHEN the factory is called
-     *  THEN throw an [Exception]
+     * GIVEN an order for a window type that does not exist WHEN the factory is called THEN throw an [Exception]
      */
     @Test
     public void testDefaultCase() {
-        Exception exception = assertThrows(Exception.class, () -> {
+        assertThatThrownBy(() -> {
             factory.create(Type.Wood);
-        });
-
-        assertEquals("Cannot create window of type Wood", exception.getMessage());
+        })
+            .isInstanceOf(Exception.class)
+            .hasMessage("Cannot create window of type Wood");
     }
 }

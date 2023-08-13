@@ -1,28 +1,26 @@
 package JavaDesignPatterns.abstractFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import JavaDesignPatterns.abstractFactory.doorFactories.DoorFactory;
 import JavaDesignPatterns.abstractFactory.models.Door;
 import JavaDesignPatterns.abstractFactory.models.Material;
 import JavaDesignPatterns.abstractFactory.models.components.hinge.BrassHinge;
+import JavaDesignPatterns.abstractFactory.models.components.hinge.Hinge;
 import JavaDesignPatterns.abstractFactory.models.components.hinge.IronHinge;
 import JavaDesignPatterns.abstractFactory.models.components.panel.IronPanel;
+import JavaDesignPatterns.abstractFactory.models.components.panel.Panel;
 import JavaDesignPatterns.abstractFactory.models.components.panel.WoodPanel;
 import JavaDesignPatterns.abstractFactory.models.enums.FactoryType;
 import JavaDesignPatterns.abstractFactory.models.enums.Finish;
 import JavaDesignPatterns.abstractFactory.models.enums.Type;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DoorFactoryTest {
     DoorFactory factory;
 
-    @BeforeAll
+    @BeforeClass
     public void createFactory() {
         try {
             factory = (DoorFactory) OpeningFactoryProvider.getFactory(FactoryType.Door);
@@ -42,14 +40,18 @@ public class DoorFactoryTest {
     @Test
     public void testWoodDoor() throws Exception {
         Door actual = factory.create(Type.Wood);
+        Hinge actualHinge = actual.getHinge();
+        Panel actualPanel = actual.getPanel();
+
         // Test the hinge
-        assertTrue(actual.getHinge() instanceof BrassHinge);
-        assertEquals(Material.Brass, actual.getHinge().material());
-        assertEquals(Finish.Shine, actual.getHinge().finish());
+        assertThat(actualHinge).isInstanceOf(BrassHinge.class);
+        assertThat(actualHinge.material()).isEqualTo(Material.Brass);
+        assertThat(actualHinge.finish()).isEqualTo(Finish.Shine);
+
         // Test the panel
-        assertTrue(actual.getPanel() instanceof WoodPanel);
-        assertEquals(Material.Wood, actual.getPanel().material());
-        assertTrue(actual.getPanel().isHollow());
+        assertThat(actualPanel).isInstanceOf(WoodPanel.class);
+        assertThat(actualPanel.material()).isEqualTo(Material.Wood);
+        assertThat(actualPanel.isHollow()).isTrue();
     }
 
     /**
@@ -63,14 +65,18 @@ public class DoorFactoryTest {
     @Test
     public void testIronDoor() throws Exception {
         Door actual = factory.create(Type.Iron);
+        Hinge actualHinge = actual.getHinge();
+        Panel actualPanel = actual.getPanel();
+
         // Test the hinge
-        assertTrue(actual.getHinge() instanceof IronHinge);
-        assertEquals(Material.Iron, actual.getHinge().material());
-        assertEquals(Finish.Matte, actual.getHinge().finish());
+        assertThat(actualHinge).isInstanceOf(IronHinge.class);
+        assertThat(actualHinge.material()).isEqualTo(Material.Iron);
+        assertThat(actualHinge.finish()).isEqualTo(Finish.Matte);
+
         // Test the panel
-        assertTrue(actual.getPanel() instanceof IronPanel);
-        assertEquals(Material.Iron, actual.getPanel().material());
-        assertFalse(actual.getPanel().isHollow());
+        assertThat(actualPanel).isInstanceOf(IronPanel.class);
+        assertThat(actualPanel.material()).isEqualTo(Material.Iron);
+        assertThat(actualPanel.isHollow()).isFalse();
     }
 
     /**
@@ -80,10 +86,10 @@ public class DoorFactoryTest {
      */
     @Test
     public void testDefaultCase() {
-        Exception exception = assertThrows(Exception.class, () -> {
+        assertThatThrownBy(() -> {
             factory.create(Type.Frosted);
-        });
-
-        assertEquals("Cannot create door of type Frosted", exception.getMessage());
+        })
+            .isInstanceOf(Exception.class)
+            .hasMessage("Cannot create door of type Frosted");
     }
 }

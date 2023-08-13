@@ -1,25 +1,26 @@
 package JavaDesignPatterns.builder;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.fail;
 import JavaDesignPatterns.builder.builders.CustomDoorBuilder;
 import JavaDesignPatterns.builder.builders.Door;
 import JavaDesignPatterns.builder.builders.DoorBuilder;
+import JavaDesignPatterns.builder.builders.Handle;
+import JavaDesignPatterns.builder.builders.Hinge;
+import JavaDesignPatterns.builder.builders.Panel;
 import JavaDesignPatterns.builder.builders.WoodenDoorBuilder;
 import JavaDesignPatterns.builder.models.DoorBuildException;
 import JavaDesignPatterns.builder.models.enums.Finish;
 import JavaDesignPatterns.builder.models.enums.HandleType;
 import JavaDesignPatterns.builder.models.enums.Material;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.testng.annotations.Test;
 
 public class BuilderTest {
 
     /**
-     * GIVEN a wooden door order
-     * WHEN the director is called
-     * THEN the {@link Door} has a shiny brass knob handle
-     * AND it has shiny brass hinges
-     * AND it has a brown wooden door with no primer and an egg-shell finish
+     * GIVEN a wooden door order WHEN the director is called THEN the {@link Door} has a shiny brass knob handle AND it
+     * has shiny brass hinges AND it has a brown wooden door with no primer and an egg-shell finish
      */
     @Test
     public void testWoodenDoorBuilder() {
@@ -29,64 +30,71 @@ public class BuilderTest {
         try {
             actual = DoorDirector.build(builder);
         } catch (DoorBuildException dex) {
-            fail(dex);
+            fail(dex.getMessage());
             return; // Return here so the compiler understands that "actual" has been initialized.
         }
 
-        assertEquals(Finish.Shine, actual.handle().finish());
-        assertEquals(Material.Brass, actual.handle().material());
-        assertEquals(HandleType.Knob, actual.handle().type());
+        Handle actualHandle = actual.handle();
+        Hinge actualHinge = actual.hinge();
+        Panel actualPanel = actual.panel();
 
-        assertEquals(Finish.Shine, actual.hinge().finish());
-        assertEquals(Material.Brass, actual.hinge().material());
+        assertThat(actualHandle.finish()).isEqualTo(Finish.Shine);
+        assertThat(actualHandle.material()).isEqualTo(Material.Brass);
+        assertThat(actualHandle.type()).isEqualTo(HandleType.Knob);
 
-        assertEquals(Material.Wood, actual.panel().material());
-        assertEquals("Brown", actual.panel().color());
-        assertNull(actual.panel().primer()); // Clean wood doesn't need a primer!
-        assertEquals(Finish.EggShell, actual.panel().finish());
+        assertThat(actualHinge.finish()).isEqualTo(Finish.Shine);
+        assertThat(actualHinge.material()).isEqualTo(Material.Brass);
+
+        assertThat(actualPanel.material()).isEqualTo(Material.Wood);
+        assertThat(actualPanel.color()).isEqualTo("Brown");
+        assertThat(actualPanel.primer()).isNull(); // Clean wood doesn't need a primer!
+        assertThat(actualPanel.finish()).isEqualTo(Finish.EggShell);
     }
 
     /**
-     * GIVEN a custom door order WHEN the director is called THEN the {@link Door} has a shiny brass
-     * knob handle AND it has shiny brass hinges AND it has a brown wooden door with no primer and an
-     * egg-shell finish
+     * GIVEN a custom door order WHEN the director is called THEN the {@link Door} has a shiny brass knob handle AND it
+     * has shiny brass hinges AND it has a brown wooden door with no primer and an egg-shell finish
      */
     @Test
     public void testCustomDoorBuilder() {
         CustomDoorBuilder builder = new CustomDoorBuilder();
         // Prep the custom panel order
         builder.setPanelMaterial(Material.Glass)
-               .setPanelColor(null)
-               .setPanelFinish(null)
-               .setPanelPrimer(null)
-               // Prep the custom hinge order
-               .setHingeMaterial(Material.Brass)
-               .setHingeFinish(Finish.Shine)
-               // Prep the custom handle order
-               .setHandleMaterial(Material.Brass)
-               .setHandleType(HandleType.Flush)
-               .setHandleFinish(Finish.EggShell);
+            .setPanelColor(null)
+            .setPanelFinish(null)
+            .setPanelPrimer(null)
+            // Prep the custom hinge order
+            .setHingeMaterial(Material.Brass)
+            .setHingeFinish(Finish.Shine)
+            // Prep the custom handle order
+            .setHandleMaterial(Material.Brass)
+            .setHandleType(HandleType.Flush)
+            .setHandleFinish(Finish.EggShell);
 
         Door actual;
 
         try {
             actual = DoorDirector.build(builder);
         } catch (DoorBuildException dex) {
-            fail(dex);
+            fail(dex.getMessage());
             return; // Return here so the compiler understands that "actual" has been initialized.
         }
 
-        assertEquals(Finish.EggShell, actual.handle().finish());
-        assertEquals(Material.Brass, actual.handle().material());
-        assertEquals(HandleType.Flush, actual.handle().type());
+        Handle actualHandle = actual.handle();
+        Hinge actualHinge = actual.hinge();
+        Panel actualPanel = actual.panel();
 
-        assertEquals(Finish.Shine, actual.hinge().finish());
-        assertEquals(Material.Brass, actual.hinge().material());
+        assertThat(actualHandle.finish()).isEqualTo(Finish.EggShell);
+        assertThat(actualHandle.material()).isEqualTo(Material.Brass);
+        assertThat(actualHandle.type()).isEqualTo(HandleType.Flush);
 
-        assertEquals(Material.Glass, actual.panel().material());
-        assertNull(actual.panel().color());
-        assertNull(actual.panel().primer()); // Clean wood doesn't need a primer!
-        assertNull(actual.panel().finish());
+        assertThat(actualHinge.finish()).isEqualTo(Finish.Shine);
+        assertThat(actualHinge.material()).isEqualTo(Material.Brass);
+
+        assertThat(actualPanel.material()).isEqualTo(Material.Glass);
+        assertThat(actualPanel.color()).isNull();
+        assertThat(actualPanel.primer()).isNull();
+        assertThat(actualPanel.finish()).isNull();
     }
 
     @Test
@@ -94,13 +102,13 @@ public class BuilderTest {
         CustomDoorBuilder builder = new CustomDoorBuilder();
         // Set all the required values except the panel type.
         builder.setHingeMaterial(Material.Iron)
-               .setHandleType(HandleType.Flush)
-               .setHandleMaterial(Material.Iron);
+            .setHandleType(HandleType.Flush)
+            .setHandleMaterial(Material.Iron);
 
-        DoorBuildException exception = assertThrows(DoorBuildException.class, () -> {
+        assertThatThrownBy(() -> {
             DoorDirector.build(builder);
-        });
-
-        assertEquals("Client must specify the door panel's material", exception.getMessage());
+        })
+            .isInstanceOf(DoorBuildException.class)
+            .hasMessage("Client must specify the door panel's material");
     }
 }
