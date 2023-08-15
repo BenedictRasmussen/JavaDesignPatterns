@@ -4,42 +4,51 @@ import JavaDesignPatterns.globalModels.DynamoDb;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
 public class ProductDescription {
     private String productId;
+    private String productType;
     private String description;
     private Integer rating;
 
     @DynamoDbPartitionKey
-    @DynamoDbAttribute(value = DynamoDb.PARTITION_KEY_NAME)
-    public String productId() {
+    @DynamoDbAttribute(DynamoDb.PARTITION_KEY_NAME)
+    public String getProductId() {
         return productId;
     }
 
-    @DynamoDbPartitionKey
-    @DynamoDbAttribute(value = DynamoDb.PARTITION_KEY_NAME)
     public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    @DynamoDbAttribute(value = "description")
+    @DynamoDbSortKey
+    @DynamoDbAttribute(DynamoDb.SORT_KEY_NAME)
+    public String getProductType() {
+        return productType;
+    }
 
-    public String description() {
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    @DynamoDbAttribute("description")
+    public String getDescription() {
         return description;
     }
 
-    @DynamoDbAttribute(value = "description")
+    @DynamoDbAttribute("description")
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @DynamoDbAttribute(value = "rating")
-    public Integer rating() {
+    @DynamoDbAttribute("rating")
+    public Integer getRating() {
         return rating;
     }
 
-    @DynamoDbAttribute(value = "rating")
+    @DynamoDbAttribute("rating")
     public void setRating(Integer rating) {
         this.rating = rating;
     }

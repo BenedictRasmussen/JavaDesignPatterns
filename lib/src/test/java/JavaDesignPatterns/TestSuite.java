@@ -5,8 +5,9 @@ import java.net.URI;
 import JavaDesignPatterns.globalModels.DynamoDb;
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
+import org.testng.TestNGException;
 import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -26,17 +27,28 @@ import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
  * TestSuite implements suite-level operations. Performing them here keeps the individual test classes cleaner.
  */
 public class TestSuite {
-    // TODO teardown server
     private DynamoDBProxyServer server;
     // Used to create a basic table
     private DynamoDbClient ddbClient;
     // TODO make publicly available so we don't re-create this client
-    private DynamoDbEnhancedClient ddbEnhancedClient;
+    private static DynamoDbEnhancedClient ddbEnhancedClient;
 
     /**
-     * @see https://github.com/awslabs/amazon-dynamodb-local-samples/blob/7b369352bb443c34c10ca9ed66009fafe2cd124e/DynamoDBLocal/src/main/java/aws/example/Main.java#L155-L171
+     * @return a {@link DynamoDbEnhancedClient}
      */
-    @BeforeSuite
+    public static DynamoDbEnhancedClient getDynamoDbEnhancedClient() {
+        if (TestSuite.ddbEnhancedClient == null) {
+            throw new TestNGException("Test suite has not completed DynamoDb setup.");
+        }
+        return TestSuite.ddbEnhancedClient;
+    }
+
+    /**
+     * @see <a
+     *     href="https://github.com/awslabs/amazon-dynamodb-local-samples/blob/7b369352bb443c34c10ca9ed66009fafe2cd124e/DynamoDBLocal/src/main/java/aws/example/Main.java#L155-L171">Setting
+     *     up DynamoDbLocal</a>
+     */
+    @BeforeTest
     public void setUpDynamoDbLocal() throws Exception {
         // We copied the SQL Lite DLLs to the project's build/libs directory during the Gradle build.
         String sqlLitePath = String.format("%s/%s", System.getProperty("user.dir"), "build/libs");
@@ -56,12 +68,22 @@ public class TestSuite {
                 AttributeDefinition.builder()
                     .attributeName(DynamoDb.PARTITION_KEY_NAME)
                     .attributeType(ScalarAttributeType.S)
+                    .build(),
+                AttributeDefinition.builder()
+                    .attributeName(DynamoDb.SORT_KEY_NAME)
+                    .attributeType(ScalarAttributeType.S)
                     .build()
             )
-            .keySchema(KeySchemaElement.builder()
-                .attributeName(DynamoDb.PARTITION_KEY_NAME)
-                .keyType(KeyType.HASH)
-                .build())
+            .keySchema(
+                KeySchemaElement.builder()
+                    .attributeName(DynamoDb.PARTITION_KEY_NAME)
+                    .keyType(KeyType.HASH)
+                    .build(),
+                KeySchemaElement.builder()
+                    .attributeName(DynamoDb.SORT_KEY_NAME)
+                    .keyType(KeyType.RANGE)
+                    .build()
+            )
             .tableName(DynamoDb.TABLE_NAME)
             .billingMode(BillingMode.PAY_PER_REQUEST)
             .build();
@@ -95,7 +117,7 @@ public class TestSuite {
             )))
             .build();
 
-        this.ddbEnhancedClient = DynamoDbEnhancedClient.builder()
+        TestSuite.ddbEnhancedClient = DynamoDbEnhancedClient.builder()
             .dynamoDbClient(this.ddbClient)
             .build();
     }

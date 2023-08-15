@@ -70,6 +70,7 @@ test {
             events "PASSED", "SKIPPED", "FAILED"
             // Set this to true to see STDOUT and STDERR on the console
             showStandardStreams = true
+            suites 'src/test/resources/suite.xml'
         }
     }
 }
