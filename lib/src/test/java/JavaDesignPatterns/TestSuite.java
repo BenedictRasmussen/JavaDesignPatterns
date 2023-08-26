@@ -30,7 +30,6 @@ public class TestSuite {
     private DynamoDBProxyServer server;
     // Used to create a basic table
     private DynamoDbClient ddbClient;
-    // TODO make publicly available so we don't re-create this client
     private static DynamoDbEnhancedClient ddbEnhancedClient;
 
     /**

@@ -45,7 +45,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.24.2'
 
     // Adds a locally running DynamoDB instance
-    testImplementation 'software.amazon.awssdk:url-connection-client'
+    implementation 'software.amazon.awssdk:url-connection-client'
     testImplementation 'com.amazonaws:DynamoDBLocal:2.0.0'
     dynamoDbLocal fileTree(dir: 'lib', include: ["*.dylib", "*.so", "*.dll"])
     dynamoDbLocal 'com.amazonaws:DynamoDBLocal:2.0.0'
